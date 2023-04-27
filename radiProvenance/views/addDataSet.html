@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>科学数据集注册</title>
+    <link rel="stylesheet" type="text/css" href="/static/css/reset.css">
+    <link rel="stylesheet" type="text/css" href="/static/css/main.css">
+</head>
+<body>
+   <div class="header">
+        <a href="#" class="logo fl"><img src="/static/img/logo.png" alt="logo"></a>
+        <a href="/logout" class="logout fr">退 出</a>
+    </div>
+    
+    <div class="side_bar">
+        <div class="user_info">
+            <img src="/static/img/user.png" alt="张大山">
+            <p>欢迎你 <em>{{.userName}}</em></p>
+        </div>
+
+        <div class="menu_con">
+            <div class="first_menu active"><a href="javascript:;" class="icon02">数据集管理</a></div>
+            <ul class="sub_menu show">
+                <li><a href="/trace/showMetas" class="icon031">数据集列表</a></li>
+                <li><a href="/trace/showMyMetas" class="icon032">我的数据集</a></li>
+                <li><a href="/trace/registerDataSet" class="icon034">科学数据集注册</a></li>
+                <li><a href="/trace/waterMarkadd" class="icon034">数字水印Demo</a></li>
+
+            </ul>
+        </div>
+    </div>
+
+    <div class="main_body" id="main_body">
+        <div class="breadcrub">
+            当前位置：数据集管理>科学数据集注册
+        </div>
+        <div class="pannel">
+            <form method="post" action="/trace/registerDataSet" enctype="multipart/form-data">
+            <h3 class="review_title">科学数据集注册</h3>
+            <div class="form_group">
+                <label>数据集名：</label>
+                <input type="text" class="input_txt2" name="dataSetName" >
+            </div>
+            <div class="form_group">
+                <label>摘要：</label>
+                <textarea name="abstract" class="input_txt_abstract"></textarea>
+            </div>
+            <div class="form_group">
+                <label>选择文件：</label>
+                <input type="file" class="input_file"  name="uploadname">
+            </div>
+            <div class="form_group indent_group line_top">
+                <input type="submit" value="注册数据集" class="confirm">
+            </div>
+        </form>            
+        </div>    
+</div>
+
+</body>
+</html>

@@ -1,0 +1,81 @@
+# Copyright IBM Corp. All Rights Reserved.
+#
+# SPDX-License-Identifier: Apache-2.0
+#
+
+version: '2'
+
+services:
+
+  orderer.radi.trace.com:
+    container_name: orderer.radi.trace.com
+    extends:
+      file: peer-base.yaml
+      service: orderer-base
+    volumes:
+        - ../channel-artifitial/orderergenesis.block:/var/hyperledger/orderer/orderer.genesis.block
+        - ../crymaterials/ordererOrganizations/radi.trace.com/orderers/orderer.radi.trace.com/msp:/var/hyperledger/orderer/msp
+        - ../crymaterials/ordererOrganizations/radi.trace.com/orderers/orderer.radi.trace.com/tls/:/var/hyperledger/orderer/tls
+        - orderer.radi.trace.com:/var/hyperledger/production/orderer
+    ports:
+      - 7050:7050
+
+  peer1.radi.trace.com:
+    container_name: peer1.radi.trace.com
+    extends:
+      file: peer-base.yaml
+      service: peer-base
+    environment:
+      - CORE_PEER_ID=peer1.radi.trace.com
+      - CORE_PEER_ADDRESS=peer1.radi.trace.com:7051
+      - CORE_PEER_LISTENADDRESS=0.0.0.0:7051
+      - CORE_PEER_CHAINCODEADDRESS=peer1.radi.trace.com:7052
+      - CORE_PEER_CHAINCODELISTENADDRESS=0.0.0.0:7052
+      - CORE_PEER_GOSSIP_BOOTSTRAP=peer2.radi.trace.com:8051
+      - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer1.radi.trace.com:7051
+      - CORE_PEER_LOCALMSPID=RadiMSP
+      - CORE_LEDGER_STATE_STATEDATABASE=CouchDB
+      - CORE_LEDGER_STATE_COUCHDBCONFIG_COUCHDBADDRESS=couchdb0:5984
+      # The CORE_LEDGER_STATE_COUCHDBCONFIG_USERNAME and CORE_LEDGER_STATE_COUCHDBCONFIG_PASSWORD
+      # provide the credentials for ledger to connect to CouchDB.  The username and password must
+      # match the username and password set for the associated CouchDB.
+      - CORE_LEDGER_STATE_COUCHDBCONFIG_USERNAME=
+      - CORE_LEDGER_STATE_COUCHDBCONFIG_PASSWORD=
+    volumes:
+        - /var/run/:/host/var/run/
+        - ../crymaterials/peerOrganizations/radi.trace.com/peers/peer1.radi.trace.com/msp:/etc/hyperledger/fabric/msp
+        - ../crymaterials/peerOrganizations/radi.trace.com/peers/peer1.radi.trace.com/tls:/etc/hyperledger/fabric/tls
+        - peer1.radi.trace.com:/var/hyperledger/production
+    ports:
+      - 7051:7051
+
+  peer2.radi.trace.com:
+    container_name: peer2.radi.trace.com
+    extends:
+      file: peer-base.yaml
+      service: peer-base
+    environment:
+      - CORE_PEER_ID=peer2.radi.trace.com
+      - CORE_PEER_ADDRESS=peer2.radi.trace.com:8051
+      - CORE_PEER_LISTENADDRESS=0.0.0.0:8051
+      - CORE_PEER_CHAINCODEADDRESS=peer2.radi.trace.com:8052
+      - CORE_PEER_CHAINCODELISTENADDRESS=0.0.0.0:8052
+      - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer2.radi.trace.com:8051
+      - CORE_PEER_GOSSIP_BOOTSTRAP=peer1.radi.trace.com:7051
+      - CORE_PEER_LOCALMSPID=RadiMSP
+      - CORE_LEDGER_STATE_STATEDATABASE=CouchDB
+      - CORE_LEDGER_STATE_COUCHDBCONFIG_COUCHDBADDRESS=couchdb1:5984
+      # The CORE_LEDGER_STATE_COUCHDBCONFIG_USERNAME and CORE_LEDGER_STATE_COUCHDBCONFIG_PASSWORD
+      # provide the credentials for ledger to connect to CouchDB.  The username and password must
+      # match the username and password set for the associated CouchDB.
+      - CORE_LEDGER_STATE_COUCHDBCONFIG_USERNAME=
+      - CORE_LEDGER_STATE_COUCHDBCONFIG_PASSWORD=
+    volumes:
+        - /var/run/:/host/var/run/
+        - ../crymaterials/peerOrganizations/radi.trace.com/peers/peer2.radi.trace.com/msp:/etc/hyperledger/fabric/msp
+        - ../crymaterials/peerOrganizations/radi.trace.com/peers/peer2.radi.trace.com/tls:/etc/hyperledger/fabric/tls
+        - peer2.radi.trace.com:/var/hyperledger/production
+
+    ports:
+      - 8051:8051
+

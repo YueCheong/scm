@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>数据集列表页面</title>
+    <link rel="stylesheet" type="text/css" href="/static/css/reset.css">
+    <link rel="stylesheet" type="text/css" href="/static/css/main.css">
+    <script type="text/javascript" src="/static/js/jquery-1.12.4.min.js"></script>
+
+</head>
+<body>
+
+<div class="header">
+    <a href="#" class="logo fl"><img src="/static/img/logo.png" alt="logo"></a>
+    <a href="/logout" class="logout fr">退 出</a>
+</div>
+
+<div class="side_bar">
+    <div class="user_info">
+        <img src="/static/img/user.png" alt="张大山">
+        <p>欢迎你 <em>{{.userName}}</em></p>
+    </div>
+
+    <div class="menu_con">
+        <div class="first_menu active"><a href="javascript:;" class="icon02">数据集管理</a></div>
+        <ul class="sub_menu show">
+            <li><a href="/trace/showMetas" class="icon031">数据集列表</a></li>
+            <li><a href="/trace/showMyMetas" class="icon032">我的数据集</a></li>
+            <li><a href="/trace/registerDataSet" class="icon034">科学数据集注册</a></li>
+            <li><a href="/trace/waterMarkadd" class="icon034">数字水印Demo</a></li>
+
+        </ul>
+    </div>
+</div>
+
+    <div class="main_body" id="main_body">
+        <div class="breadcrub">
+            当前位置：数据集管理>数据集列表
+        </div>
+        <div class="pannel" style="overflow: auto">
+            <table class="common_table">
+                <tr>
+                    <th width="10%">数据集ID</th>
+                    <th width="25%">数据集名</th>
+                    <th width="16%">拥有者</th>
+                    <th width="15%">上传时间</th>
+                    <th width="7%">下载状态</th>
+                    <th width="7%">查询详情</th>
+                    <th width="20%">数据集Hash</th>
+                </tr>
+                
+            {{range .metaInfos}}
+                <tr>
+                    <td>{{.DataId}}</td>
+                    <td>{{.DataName}}</td>
+                    <td> {{.Owner}}</td>
+                    <td>{{.TimeStamp}}</td>
+                    <td>{{ShowAllowed .DelFlag}}</td>
+                    <td><a href="/trace/showDetails?dataName={{.DataName}}">查询</a></td>
+                    <td>{{.Hash}}</td>
+                </tr>
+            {{end}}
+
+            </table>
+
+        </div>
+    </div>
+
+</body>
+</html>

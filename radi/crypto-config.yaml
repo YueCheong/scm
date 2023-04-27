@@ -1,0 +1,27 @@
+PeerOrgs:
+  - Name: Radi
+    Domain: radi.trace.com
+    EnableNodeOUs: true
+    Specs:
+     - Hostname: peer1
+       CommonName: peer1.radi.trace.com
+    Template: 
+      Count: 1
+      Start: 2
+    Users:
+      Count: 2
+    CA:
+       Hostname: ca
+       Country: China
+       Province: default
+       Locality: Shanghai
+       OrganizationalUnit: Trace
+       # StreetAddress: default
+       # PostalCode:
+       
+
+OrdererOrgs:
+  - Name: Orderer
+    Domain: radi.trace.com
+    Specs:
+      - Hostname: orderer

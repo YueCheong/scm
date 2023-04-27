@@ -1,0 +1,17 @@
+tlsfile=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/ordererOrganizations/radi.trace.com/orderers/orderer.radi.trace.com/msp/tlscacerts/tlsca.radi.trace.com-cert.pem
+
+peer channel create -o orderer.radi.trace.com:7050 --tls true --cafile $tlsfile -c radichannel -f ./channel-artifacts/radichannel.tx
+
+peer channel join -b radichannel.block
+
+peer chaincode package -n fabcar -v 1.0 -p github.com/chaincode/fabcar/go fabcar.package
+
+peer chaincode install fabcar.package
+
+peer chaincode instantiate -o orderer.radi.trace.com:7050 --tls --cafile $tlsfile -C radichannel -n fabcar -v 1.0 -c '{"Args":["init"]}'
+
+rootcrt1=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/radi.trace.com/peers/peer1.radi.trace.com/tls/ca.crt
+
+peer chaincode invoke -o orderer.radi.trace.com:7050 --tls --cafile $tlsfile -C radichannel -n fabcar --peerAddresses peer1.radi.trace.com:7051 --tlsRootCertFiles $rootcrt1 -c '{"Args":["initLedger"]}'
+
+peer chaincode invoke -o orderer.radi.trace.com:7050 --tls --cafile $tlssfile -C radichannel -n fabcar --peerAddresses peer1.radi.trace.com:7051 --tlsRootCertFiles $rootcrt1 -c '{"Args":["queryAllCars"]}'
